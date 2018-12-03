@@ -4,17 +4,6 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'r
 import { updateTitle, addTodo, toggleTodo } from '../../actions'
 
 class TodosList extends Component {
-  _renderItem = ({ item, index }) => {
-    console.log('item', item, index)
-    return (
-      <TouchableOpacity onPress={() => this.props.toggleTodo(index)}>
-        <Text style={item.done ? styles.doneTodo : styles.todo}>• {item.title}</Text>
-      </TouchableOpacity>
-    )
-  }
-
-  _keyExtractor = (item, index) => index.toString()
-
   render() {
     const { title } = this.props
     return (
@@ -26,13 +15,26 @@ class TodosList extends Component {
             <Text style={styles.addTodoText}>Add Todo</Text>
           </TouchableOpacity>
         </View>
+        
         <View style={styles.todosList}>
-          <FlatList
-            data={this.props.todosList}
-            refreshing={this.props.loading}
-            renderItem={this._renderItem}
-            keyExtractor={this._keyExtractor}>
-          </FlatList>
+          {
+            this.props.todosList.map((todo, index) => {
+              return (
+                <TouchableOpacity onPress={() => this.props.toggleTodo(index)} key={index} >
+                  <Text style={todo.done ? styles.doneTodo : styles.todo}>• {todo.title}</Text>
+                </TouchableOpacity>
+              )
+            })
+          }
+        </View>
+
+        <View style={styles.filters}>
+          <Text style={styles.filtersText}>Filter by: </Text>
+          <TouchableOpacity><Text style={styles.filtersText}>All</Text></TouchableOpacity>
+          <Text style={styles.filtersText}>, </Text>
+          <TouchableOpacity><Text style={styles.filtersText}>Completed</Text></TouchableOpacity>
+          <Text style={styles.filtersText}> or </Text><TouchableOpacity>
+          <Text style={styles.filtersText}>Not completed</Text></TouchableOpacity><Text style={styles.filtersText}>.</Text>
         </View>
       </View>
     )
@@ -106,6 +108,18 @@ const styles = StyleSheet.create({
     color: '#F5FCFF',
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid'
+  },
+  filters: {
+    width: '100%',
+    paddingHorizontal: 30,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  filtersText: {
+    color: '#F5FCFF',
+    fontSize: 16
   }
 })
 
