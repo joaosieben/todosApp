@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native'
-import { updateTitle, addTodo } from '../../actions'
+import { updateTitle, addTodo, toggleTodo } from '../../actions'
 
 class TodosList extends Component {
-  renderTodo = ({ item }) => {
+  _renderItem = ({ item, index }) => {
+    console.log('item', item, index)
     return (
-      <Text style={styles.todo}>• {item}</Text>
+      <TouchableOpacity onPress={() => this.props.toggleTodo(index)}>
+        <Text style={item.done ? styles.doneTodo : styles.todo}>• {item.title}</Text>
+      </TouchableOpacity>
     )
   }
+
+  _keyExtractor = (item, index) => index.toString()
+
   render() {
     const { title } = this.props
     return (
@@ -24,7 +30,8 @@ class TodosList extends Component {
           <FlatList
             data={this.props.todosList}
             refreshing={this.props.loading}
-            renderItem={this.renderTodo}>
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}>
           </FlatList>
         </View>
       </View>
@@ -86,12 +93,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'nowrap',
     width: '100%',
-    paddingHorizontal: 40
+    paddingHorizontal: 30
   },
   todo: {
     textAlign: 'left',
     fontSize: 16,
     color: '#F5FCFF'
+  },
+  doneTodo: {
+    textAlign: 'left',
+    fontSize: 16,
+    color: '#F5FCFF',
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid'
   }
 })
 
@@ -102,7 +116,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = { 
   updateTitle,
-  addTodo
+  addTodo,
+  toggleTodo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodosList)
