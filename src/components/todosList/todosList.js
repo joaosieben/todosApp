@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, StyleSheet, TextInput, Button, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import { updateTitle, addTodo } from '../../actions'
 
 class TodosList extends Component {
@@ -16,7 +16,9 @@ class TodosList extends Component {
         <Text style={styles.title}>Welcome to the Todos App!</Text>
         <View style={styles.inputContainer}>
           <TextInput style={styles.input} value={title} onChangeText={(key) => this.props.updateTitle(key)} />
-          <Button title='Add Todo' onPress={() => this.props.addTodo(title)} />
+          <TouchableOpacity style={styles.addTodo} title='Add Todo' onPress={() => this.props.addTodo(title)}>
+            <Text style={styles.addTodoText}>Add Todo</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.todosList}>
           <FlatList
@@ -38,10 +40,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'nowrap',
     paddingVertical: 90,
-    backgroundColor: '#fff',
+    backgroundColor: '#4F6D7A',
   },
   title: {
-    color: '#000',
+    color: '#F5FCFF',
     flex: 1,
     fontSize: 20,
     textAlign: 'center',
@@ -64,7 +66,20 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: '#c3c3c3',
     borderWidth: 1,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    marginTop: 20,
+    color: '#F5FCFF'
+  },
+  addTodo: {
+    borderColor: '#F5FCFF',
+    borderWidth: 1,
+    borderRadius: 3,
+    marginVertical: 20,
+    padding: 10
+  },
+  addTodoText: {
+    color: '#F5FCFF',
+    fontSize: 16
   },
   todosList: {
     flex: 1,
@@ -75,7 +90,8 @@ const styles = StyleSheet.create({
   },
   todo: {
     textAlign: 'left',
-    fontSize: 16
+    fontSize: 16,
+    color: '#F5FCFF'
   }
 })
 

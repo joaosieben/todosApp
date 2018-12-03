@@ -6,10 +6,12 @@ import {
 } from './types'
 
 export const addTodo = (todo) => dispatch => {
-  dispatch({ type: SET_LOADING, payload: true })
-  dispatch({ type: ADD_TODO, payload: todo })
-  dispatch({ type: SET_LOADING, payload: false })
-  dispatch({ type: CLEAR_TITLE })
+  if (todo.trim().length) {
+    dispatch({ type: SET_LOADING, payload: true })
+    dispatch({ type: ADD_TODO, payload: todo })
+    dispatch({ type: SET_LOADING, payload: false })
+    dispatch({ type: CLEAR_TITLE })
+  }
 }
 
 export const updateTitle = (title) => dispatch => {
